@@ -1,0 +1,6 @@
+<li id="send-message" style="border-bottom: 0px" class="collection-item avatar">
+                    <img src="{{ message.from_user.profile.get_picture }}" alt="" class="circle">
+                    <a href="{% url 'profile' message.from_user.username %}">{{ message.from_user.profile.get_screen_name }}</a>
+                    <p>{{ message.message }}</p>
+                    <p style="font-size: 12px" class="right-align">{{ message.date|date:'N d G:i' }}</p>
+  </li>

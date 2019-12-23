@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Mural - Delta Comercial</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css/fullcalendar.min.css' %}" rel='stylesheet' />
+  <link href="{% static 'css/fullcalendar.print.min.css' %}" rel='stylesheet' media='print' />
+
+</head>
+<body>
+
+<nav class="indigo darken-2" role="navigation">
+    <div class="nav-wrapper">
+      <img src="{% static 'img/delta.png' %}">
+      <a id="logo-container" href="{% url 'home'%}" class="brand-logo">Delta Comercial, S.A.</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a style="vertical-align: middle !important;" href="{% url 'home'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/dashboard.png' %}">Mural</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'calendar'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/date_range.png' %}">Eventos</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'birthday'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/cake.png' %}">Cumpleaños</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'profile' user.username %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/account_circle.png' %}">{{ user.profile.get_screen_name }}</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'feedback' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/email.png' %}">Buzón sugerencias</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'settings' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/settings.png' %}">Opciones</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'logout' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/power_settings_new.png' %}"></a></li>
+
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a style="vertical-align: middle !important;" href="{% url 'home'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/dashboard_b.png' %}">Mural</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'calendar'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/date_range_b.png' %}">Eventos</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'birthday'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/cake_b.png' %}">Cumpleaños</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'profile' user.username %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/account_circle_b.png' %}">{{ user.profile.get_screen_name }}</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'feedback' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/email_b.png' %}">Buzón sugerencias</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'settings' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/settings_b.png' %}">Opciones</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'logout' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/power_settings_new_b.png' %}"></a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+
+
+
+<!-- Publicaciones -->
+  <div class="row">
+
+    <div class="col s12 m4">
+      <div class="card">
+        <div class="card-image">
+          <img src="{% static 'img/eventos_hoy.jpg' %}">
+        </div>
+        <div class="card-content">
+          <div class="center-align">
+            <img style="max-width: 35px; max-height: 35px" src="{% static 'img/pop_l.png' %}" class="center-align">
+            <img style="max-width: 35px; max-height: 35px" src="{% static 'img/emoji_cake.png' %}" class="center-align">
+            <img style="max-width: 35px; max-height: 35px" src="{% static 'img/pop_r.png' %}" class="center-align">
+            <h5><img style="max-width: 35px; max-height: 35px" src="{% static 'img/ballon_l.png' %}" class="center-align">Hoy esta de cumpleaños<img style="max-width: 35px; max-height: 35px" src="{% static 'img/ballon_r.png' %}" class="center-align"></h5>
+            {% for birthdays in a_birthdays %}
+              <p style="vertical-align: middle !important;" style="font-size: 18px"><strong>{{ birthdays.name }}</strong> | {{ birthdays.department }}</p>
+              {% empty %}
+              <p style="font-size: 18px">No hay cumpleaños..</p>
+            {% endfor %} 
+            <br>
+            <div class="divider"></div>
+            <br>
+            <img style="max-width: 35px; max-height: 35px" src="{% static 'img/emoji_calendar.png' %}">
+            <h5>Eventos</h5>
+            {% for h_events in a_events %}
+              <p style="font-size: 18px">{{ h_events.title }}</p>
+              {% empty %}
+              <p style="font-size: 18px">No hay eventos..</p>
+           {% endfor %} 
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    {% for publicmemos in memosp %}
+
+    <!--   Welcome Section   -->
+    {% if publicmemos.section == 'welcome' %}
+    <div class="col s12 m4">
+      <div class="card hoverable">
+        <div class="card-image">
+          <img class="materialboxed" id="img-custom-circle" src="{{ publicmemos.picture.url }}">
+          <img src="{% static 'img/bienvenida.jpg' %}">
+        </div>
+        <div class="card-content">
+          <br><br><br>
+            <p style="font-weight: bold;" class="right-align">{{ publicmemos.date |date:'d N - Y'}}</p>
+            {{ publicmemos.text|safe }}
+        </div>
+
+
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header">
+              <img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/comment_b.png' %}"><span style="padding-left: 15px;">Comentarios</span>
+              <span class="new badge">{{ publicmemos.comments.count }}</span></div>
+            <div class="collapsible-body">
+              <div class="row">
+                <form method="POST" id="post-form{{ forloop.counter }}">
+                {% csrf_token %}
+                <input type="hidden" name="memo_num" id="memo_num{{ forloop.counter }}" value="{{ forloop.counter }}">
+                <input type="hidden" name="memo" id="memo{{ forloop.counter }}" value="{{ publicmemos.slug }}">
+                 <input type="text" name="comment" id="post-text{{ forloop.counter }}">
+              <button class="btn waves-effect waves-light" type="submit" name="action" value="Post"><span style="padding-right: 15px;">Send</span><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/send.png' %}">
+              </button>
+              </form>
+              </div>
+
+              <ul style="overflow-y: scroll; height:400px;" class="collection">
+               {% for comment in publicmemos.comments.all %}
+                <li class="collection-item avatar">
+                  <!-- Original: {{ comment.user.profile.get_picture }} para ver la imagen del usuario, se esta utilizando de esta manera porque la imagen sera estatica. -->
+                  <img src="{% static 'img/user.png' %}" alt="" class="circle">
+                  <a href="{% url 'profile' comment.user.username %}" class="title">{{ comment.user }}:</a>
+                  <p>{{ comment.comment }}</p>
+                  <div>
+                    <p style="font-size: 13px" class="right-align">{{ comment.date }}</p>
+                  </div>
+                  {% empty %}
+                    <p class="center-align">Se el primero en comentar!</p>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  {% endif %}
+  <!--  END Welcome Section   -->
+
+  
+  <!--  Partner Section   -->
+  {% if publicmemos.section == 'meet' %}
+    <div class="col s12 m4">
+      <div class="card hoverable">
+        <div class="card-image">
+          <img class="materialboxed" id="img-custom-circle" src="{{ publicmemos.picture.url }}">
+          <img src="{% static 'img/partner.jpg' %}">
+        </div>
+        <div class="card-content">
+          <br><br><br>
+          <p style="font-weight: bold;" class="right-align">{{ publicmemos.date |date:'d N - Y'}}</p>
+          {{ publicmemos.text|safe }}
+        </div>
+
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header">
+              <img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/comment_b.png' %}"><span style="padding-left: 15px;">Comentarios</span>
+              <span class="new badge">{{ publicmemos.comments.count }}</span></div>
+            <div class="collapsible-body">
+              <div class="row">
+                <form method="POST" id="post-form{{ forloop.counter }}">
+                {% csrf_token %}
+                <input type="hidden" name="memo_num" id="memo_num{{ forloop.counter }}" value="{{ forloop.counter }}">
+                <input type="hidden" name="memo" id="memo{{ forloop.counter }}" value="{{ publicmemos.slug }}">
+                 <input type="text" name="comment" id="post-text{{ forloop.counter }}">
+              <button class="btn waves-effect waves-light" type="submit" name="action" value="Post"><span style="padding-right: 15px;">Send</span><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/send.png' %}"></button>
+              </form>
+              </div>
+
+              <ul class="collection">
+               {% for comment in publicmemos.comments.all %}
+                <li class="collection-item avatar">
+                  <!-- Original: {{ comment.user.profile.get_picture }} para ver la imagen del usuario, se esta utilizando de esta manera porque la imagen sera estatica. -->
+                  <img src="{% static 'img/user.png' %}" alt="" class="circle">
+                  <a href="{% url 'profile' comment.user.username %}" class="title">{{ comment.user }}:</a>
+                  <p>{{ comment.comment }}</p>
+                  <div>
+                    <p style="font-size: 13px" class="right-align">{{ comment.date }}</p>
+                  </div>
+                  {% empty %}
+                    <p class="center-align">Se el primero en comentar!</p>
+                </li>
+                {% endfor %}
+              </ul>
+
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+  <!--  END Partner Section   -->
+
+  <!--  Promotion Section   -->
+  {% if publicmemos.section == 'promotion' %}
+    <div class="col s12 m4">
+      <div class="card hoverable">
+        <div class="card-image">
+          <img class="materialboxed" id="img-custom-circle" src="{{ publicmemos.picture.url }}">
+          <img src="{% static 'img/promo_2.png' %}">
+        </div>
+        <div class="card-content">
+          <br><br>
+          <p style="font-weight: bold;" class="right-align">{{ publicmemos.date |date:'d N - Y'}}</p>
+          {{ publicmemos.text|safe }}
+        </div>
+
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header">
+              <img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/comment_b.png' %}"><span style="padding-left: 15px;">Comentarios</span>
+              <span class="new badge">{{ publicmemos.comments.count }}</span></div>
+            <div class="collapsible-body">
+              <div class="row">
+                <form method="POST" id="post-form{{ forloop.counter }}">
+                {% csrf_token %}
+                <input type="hidden" name="memo_num" id="memo_num{{ forloop.counter }}" value="{{ forloop.counter }}">
+                <input type="hidden" name="memo" id="memo{{ forloop.counter }}" value="{{ publicmemos.slug }}">
+                 <input type="text" name="comment" id="post-text{{ forloop.counter }}">
+                <button class="btn waves-effect waves-light" type="submit" name="action" value="Post"><span style="padding-right: 15px;">Send</span><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/send.png' %}"></button>
+              </form>
+              </div>
+
+              <ul class="collection">
+               {% for comment in publicmemos.comments.all %}
+                <li class="collection-item avatar">
+                  <!-- Original: {{ comment.user.profile.get_picture }} para ver la imagen del usuario, se esta utilizando de esta manera porque la imagen sera estatica. -->
+                  <img src="{% static 'img/user.png' %}" alt="" class="circle">
+                  <a href="{% url 'profile' comment.user.username %}" class="title">{{ comment.user }}:</a>
+                  <p>{{ comment.comment }}</p>
+                  <div>
+                    <p style="font-size: 13px" class="right-align">{{ comment.date }}</p>
+                  </div>
+                  {% empty %}
+                    <p class="center-align">Se el primero en comentar!</p>
+                </li>
+                {% endfor %}
+              </ul>
+
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+    {% endif %}
+  <!--  END Promotion Section   -->
+
+  <!--  BirthBoy Section   -->
+  {% if publicmemos.section == 'birthboy' %}
+    <div class="col s12 m4">
+      <div class="card hoverable">
+        <div class="card-image">
+          <img class="materialboxed" id="img-custom-circle" src="{{ publicmemos.picture.url }}">
+          <img src="{% static 'img/boy_2.png' %}">
+        </div>
+        <div class="card-content">
+          <br><br><br>
+          <p style="font-weight: bold;" class="right-align">{{ publicmemos.date |date:'d N - Y'}}</p>
+          {{ publicmemos.text|safe }}
+        </div>
+
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header">
+              <img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/comment_b.png' %}"><span style="padding-left: 15px;">Comentarios</span>
+              <span class="new badge">{{ publicmemos.comments.count }}</span></div>
+            <div class="collapsible-body">
+              <div class="row">
+                <form method="POST" id="post-form{{ forloop.counter }}">
+                {% csrf_token %}
+                <input type="hidden" name="memo_num" id="memo_num{{ forloop.counter }}" value="{{ forloop.counter }}">
+                <input type="hidden" name="memo" id="memo{{ forloop.counter }}" value="{{ publicmemos.slug }}">
+                 <input type="text" name="comment" id="post-text{{ forloop.counter }}">
+
+                <button class="btn waves-effect waves-light" type="submit" name="action" value="Post"><span style="padding-right: 15px;">Send</span><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/send.png' %}"></button>
+              </form>
+              </div>
+
+              <ul class="collection">
+               {% for comment in publicmemos.comments.all %}
+                <li class="collection-item avatar">
+                  <!-- Original: {{ comment.user.profile.get_picture }} para ver la imagen del usuario, se esta utilizando de esta manera porque la imagen sera estatica. -->
+                  <img src="{% static 'img/user.png' %}" alt="" class="circle">
+                  <a href="{% url 'profile' comment.user.username %}" class="title">{{ comment.user }}:</a>
+                  <p>{{ comment.comment }}</p>
+                  <div>
+                    <p style="font-size: 13px" class="right-align">{{ comment.date }}</p>
+                  </div>
+                  {% empty %}
+                    <p class="center-align">Se el primero en comentar!</p>
+                </li>
+                {% endfor %}
+              </ul>
+
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  {% endif %}
+  <!--  END BirthBoy Section   -->
+
+  <!--  BirthGirl Section   -->
+  {% if publicmemos.section == 'birthgirl' %}
+    <div class="col s12 m4">
+      <div class="card hoverable">
+        <div class="card-image">
+          <img class="materialboxed" id="img-custom-circle" src="{{ publicmemos.picture.url }}">
+          <img src="{% static 'img/girl_2.png' %}">
+        </div>
+        <div class="card-content">
+          <br><br><br>
+          <p style="font-weight: bold;" class="right-align">{{ publicmemos.date |date:'d N - Y'}}</p>
+          {{ publicmemos.text|safe }}
+        </div>
+
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header">
+              <img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/comment_b.png' %}"><span style="padding-left: 15px;">Comentarios</span>
+              <span class="new badge">{{ publicmemos.comments.count }}</span></div>
+            <div class="collapsible-body">
+              <div class="row">
+                <form method="POST" id="post-form{{ forloop.counter }}">
+                {% csrf_token %}
+                <input type="hidden" name="memo_num" id="memo_num{{ forloop.counter }}" value="{{ forloop.counter }}">
+                <input type="hidden" name="memo" id="memo{{ forloop.counter }}" value="{{ publicmemos.slug }}">
+                 <input type="text" name="comment" id="post-text{{ forloop.counter }}">
+
+              <button class="btn waves-effect waves-light" type="submit" name="action" value="Post"><span style="padding-right: 15px;">Send</span><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/send.png' %}"></button>
+              </form>
+              </div>
+
+              <ul class="collection">
+               {% for comment in publicmemos.comments.all %}
+                <li class="collection-item avatar">
+                  <!-- Original: {{ comment.user.profile.get_picture }} para ver la imagen del usuario, se esta utilizando de esta manera porque la imagen sera estatica. -->
+                  <img src="{% static 'img/user.png' %}" alt="" class="circle">
+                  <a href="{% url 'profile' comment.user.username %}" class="title">{{ comment.user }}:</a>
+                  <p>{{ comment.comment }}</p>
+                  <div>
+                    <p style="font-size: 13px" class="right-align">{{ comment.date }}</p>
+                  </div>
+                  {% empty %}
+                    <p class="center-align">Se el primero en comentar!</p>
+                </li>
+                {% endfor %}
+              </ul>
+
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  {% endif %}
+  <!--  END BirthGirl Section   -->
+  
+  <!--  Mearnful Section   -->
+  {% if publicmemos.section == 'mournful' %}
+    <div class="col s12 m4">
+      <div class="card hoverable">
+        <div class="card-image">
+          <img src="{% static 'img/mearnful_note.jpg' %}">
+        </div>
+        <div class="card-content">
+          <p style="font-weight: bold;" class="right-align">{{ publicmemos.date |date:'d N - Y'}}</p>
+          {{ publicmemos.text|safe }}
+        </div>
+
+                <ul class="collapsible">
+          <li>
+            <div class="collapsible-header">
+              <img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/comment_b.png' %}"><span style="padding-left: 15px;">Comentarios</span>
+              <span class="new badge">{{ publicmemos.comments.count }}</span></div>
+            <div class="collapsible-body">
+              <div class="row">
+                <form method="POST" id="post-form{{ forloop.counter }}">
+                {% csrf_token %}
+                <input type="hidden" name="memo_num" id="memo_num{{ forloop.counter }}" value="{{ forloop.counter }}">
+                <input type="hidden" name="memo" id="memo{{ forloop.counter }}" value="{{ publicmemos.slug }}">
+                 <input type="text" name="comment" id="post-text{{ forloop.counter }}">
+
+              <button class="btn waves-effect waves-light" type="submit" name="action" value="Post"><span style="padding-right: 15px;">Send</span><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/send.png' %}"></button>
+              </form>
+              </div>
+
+              <ul class="collection">
+               {% for comment in publicmemos.comments.all %}
+                <li class="collection-item avatar">
+                  <!-- Original: {{ comment.user.profile.get_picture }} para ver la imagen del usuario, se esta utilizando de esta manera porque la imagen sera estatica. -->
+                  <img src="{% static 'img/user.png' %}" alt="" class="circle">
+                  <a href="{% url 'profile' comment.user.username %}" class="title">{{ comment.user }}:</a>
+                  <p>{{ comment.comment }}</p>
+                  <div>
+                    <p style="font-size: 13px" class="right-align">{{ comment.date }}</p>
+                  </div>
+                  {% empty %}
+                    <p class="center-align">Se el primero en comentar!</p>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  {% endif %}
+  <!--  END Mearnful Section   -->
+
+  <!--  Memo Section   -->
+  {% if publicmemos.section == 'memo' %}
+    <div class="col s12 m4">
+      <div class="card hoverable">
+        <div class="card-image">
+          <a href="{{ publicmemos.get_absolute_url }}">
+          <img src="{% static 'img/memo.jpg' %}">
+          </a>
+        </div>
+        <div class="card-content">
+          <span class="card-title center-align">{{ publicmemos.title }}</span>
+          {{ publicmemos.text|safe | truncatechars_html:150 }}
+        </div>
+        <div class="card-action">
+          <a href="{{ publicmemos.get_absolute_url }}">Haga click para Leer mas</a>        
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  <!--  END Memo Section   -->
+
+  <!--  Accomplishment Section   -->
+  {% if publicmemos.section == 'accompli' %}
+    <div class="col s12 m4">
+      <div class="card hoverable">
+        <div class="card-image">
+          <a href="{{ publicmemos.get_absolute_url }}">
+          <img src="{% static 'img/noticumplimiento.png' %}">
+          </a>
+        </div>
+        <div class="card-content">
+          <span class="card-title center-align">{{ publicmemos.title }}</span>
+          {{ publicmemos.text|safe | truncatechars_html:200 }}
+        </div>
+        <div class="card-action">
+          <a href="{{ publicmemos.get_absolute_url }}">Haga click para Leer mas</a>        
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  <!--  END Accomplishment Section   -->
+
+    <!--  Notes Section   -->
+  {% if publicmemos.section == 'notes' %}
+    <div class="col s12 m4">
+      <div class="card hoverable">
+        <div class="card-image">
+          <a href="{{ publicmemos.get_absolute_url }}">
+          <img src="{% static 'img/notes.png' %}">
+          </a>
+        </div>
+        <div class="card-content">
+          <span class="card-title center-align">{{ publicmemos.title }}</span>
+        </div>
+        <div class="card-action">
+          <a href="{{ publicmemos.get_absolute_url }}">Haga click para Leer mas</a>        
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  <!--  END Notes Section   -->
+
+{% endfor %}
+  </div>
+<!--  END Publicaciones   -->
+
+  <!-- Pagination Section   -->
+  <ul class="pagination center-align">
+    {% if memosp.has_previous %}
+      <a href="?page={{ memosp.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="waves-effect waves-light btn-large"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/arrow_back.png' %}"><span style="padding-left: 15px;">Atras</span></a>
+    {% endif %}
+
+    {% if memosp.has_next %}
+    <a href="?page={{ memosp.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="waves-effect waves-light btn-large"><span style="padding-right: 15px;">Cargar más</span><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/add.png' %}"></a>
+    {% endif %}
+  </ul>
+ <!-- END  Pagination Section   -->
+
+
+
+<!-- Footer -->
+  <footer class="page-footer indigo darken-2">
+    <div class="container">
+      <div class="row">
+        <div class="col l4 s12">
+          <img src="{% static 'img/toyota.png' %}">
+        </div>
+        <div class="col l4 s12">
+          <img src="{% static 'img/deltafooter.png' %}">
+        </div>
+        <div class="col l4 s12">
+          <img src="{% static 'img/lexus.png' %}">
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        <!--
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a> -->
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'js/materialize.js' %}"></script>
+  <script src="{% static 'js/init.js' %}"></script>
+  <script src="{% static 'js/lib/moment.min.js' %}"></script>
+  <script src="{% static 'js/lib/jquery.min.js' %}"></script>
+  <script src="{% static 'js/fullcalendar.min.js' %}"></script>
+  <script src="{% static 'js/messages.js' %}"></script>
+  <script src="{% static 'js/check_messages.js' %}"></script>
+  <script src="{% static 'js/comment.js' %}"></script>
+
+  </body>
+</html>

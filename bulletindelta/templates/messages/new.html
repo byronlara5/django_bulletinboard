@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
+
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Mural - Delta Comercial</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css/fullcalendar.min.css' %}" rel='stylesheet' />
+  <link href="{% static 'css/fullcalendar.print.min.css' %}" rel='stylesheet' media='print' />
+
+</head>
+<body>
+
+ <nav class="indigo darken-2" role="navigation">
+    <div class="nav-wrapper">
+      <img src="{% static 'img/delta.png' %}">
+      <a id="logo-container" href="{% url 'home'%}" class="brand-logo">Delta Comercial, S.A.</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="{% url 'home'%}"><i class="material-icons left">dashboard</i>Mural</a></li>
+        <li><a href="{% url 'calendar'%}"><i class="material-icons left">date_range</i>Eventos</a></li>
+        <li><a href="{% url 'birthday'%}"><i class="material-icons left">cake</i>Cumpleaños</a></li>
+        <li><a href="{% url 'profile' user.username %}"><i class="material-icons left">account_circle</i>{{ user.profile.get_screen_name }}</a></li>
+        <li><a href="{% url 'inbox' %}"><i class="material-icons left">email</i>Buzon<span id="unread-count" class="new badge">0</span></a></li>
+        <li><a href="{% url 'settings' %}"><i class="material-icons left">settings</i></a></li>
+        <li><a href="{% url 'logout' %}"><i class="material-icons left">power_settings_new</i></a></li>
+
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="{% url 'home'%}"><i class="material-icons left">dashboard</i>Mural</a></li>
+        <li><a href="{% url 'calendar'%}"><i class="material-icons left">date_range</i>Eventos</a></li>
+        <li><a href="{% url 'birthday'%}"><i class="material-icons left">cake</i>Cumpleaños</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+
+<div class="container">
+<!-- Publicaciones -->
+<div class="row">
+  <!-- Card Inbox -->
+  <div class="col s12 m12">
+    <div class="card">
+      <div class="card-image">
+      <img src="{% static 'img/inbox.jpg' %}">
+      <span class="card-title">Buzón</span>
+      </div>
+
+      <div class="card-content">
+        <div class="row">
+        <!-- Conversations Users -->
+        <div class="col s12 m4">
+          <ul class="collection with-header">
+            <li class="collection-header"><h5>Usuarios</h5></li>
+
+            {% for conversation in conversations %}
+              <li class="collection-item avatar {% if active == conversation.user.username %}active{% endif %}"><img src="{{ conversation.user.profile.get_picture }}" alt="" class="circle"><a href="{% url 'messages' conversation.user.username %}" class="secondary-content"><span>{{ conversation.user.profile.get_screen_name }}
+                {% if conversation.unread > 0 %}
+                  <span class="badge pull-right">{{ conversation.unread }}</span>
+                {% endif %}</span></a></li>
+                
+                {% empty %}
+                <a>{% trans 'Start a conversation' %}</a>
+            {% endfor %}
+
+
+          </ul>
+            
+        </div>
+        <!--END Conversations Users -->
+
+        <!-- Messages -->
+        <div class="col s12 m8">
+          <div class="card">
+
+            <div style="border-bottom: 2px solid #e0e0e0;" class="card-action">
+              <a href="{% url 'new_message' %}" class="waves-effect waves-light btn left-align">Nuevo mensaje</a>
+            </div>
+
+            <div class="card-content">
+
+              <form class="form-horizontal" role="form" method="post">
+                    {% csrf_token %}
+                  <div class="form-group">
+                    <label for="to" class="col-sm-1 control-label">Para</label>
+                    <div class="col-sm-11">
+                    <input class="form-control typeahead" type="text" id="to" name="to">
+                    </div>
+                  </div>
+                <div class="form-group">
+                    <label for="to" class="col-sm-1 control-label">Mensaje</label>
+                <div class="col-sm-11">
+                <textarea class="materialize-textarea" id="message" name="message" placeholder="Write a message" rows="4"></textarea>
+                 </div>
+              </div>
+                <div class="form-group">
+                  <div class="col-sm-11 col-sm-offset-1">
+                    <button type="submit" class="btn btn-primary">Send</button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+
+          </div>
+
+
+
+        </div>
+        <!-- END Messages -->
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- END Card Inbox --> 
+</div>
+<!--  END Publicaciones   -->
+</div>
+
+
+<!-- Footer -->
+  <footer class="page-footer indigo darken-2">
+    <div class="container">
+      <div class="row">
+        <div class="col l4 s12">
+          <img src="{% static 'img/toyota.png' %}">
+        </div>
+        <div class="col l4 s12">
+          <img src="{% static 'img/deltafooter.png' %}">
+        </div>
+        <div class="col l4 s12">
+          <img src="{% static 'img/lexus.png' %}">
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="{% static 'js/materialize.js' %}"></script>
+  <script src="{% static 'js/init.js' %}"></script>
+  <script src="{% static 'js/lib/moment.min.js' %}"></script>
+  <script src="{% static 'js/lib/jquery.min.js' %}"></script>
+  <script src="{% static 'js/fullcalendar.min.js' %}"></script>
+  <script src="{% static 'js/messages.js' %}"></script>
+  <script src="{% static 'js/check_messages.js' %}"></script>
+  <script src="{% static 'js/jquery.typeahead.bundle.js' %}"></script>
+  <script src="{% static 'js/messages.typehead.js' %}"></script>
+
+  </body>
+</html>

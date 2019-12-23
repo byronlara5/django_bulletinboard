@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Mural - Delta Comercial</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css/fullcalendar.min.css' %}" rel='stylesheet' />
+  <link href="{% static 'css/fullcalendar.print.min.css' %}" rel='stylesheet' media='print' />
+  <style>
+  #calendar {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-color: #7c7a7a;
+  }
+
+  #calendar {
+    font-size: 12px !important;
+  }
+
+  body {
+   background-image: url("{% static 'img/birthdaybackcopy.png' %}");
+  }
+
+  </style>
+
+
+
+<!-- CSS  -->
+</head>
+<body>
+  <nav class="indigo darken-2" role="navigation">
+    <div class="nav-wrapper">
+      <img src="{% static 'img/delta.png' %}">
+      <a id="logo-container" href="{% url 'home'%}" class="brand-logo">Delta Comercial, S.A.</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a style="vertical-align: middle !important;" href="{% url 'home'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/dashboard.png' %}">Mural</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'calendar'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/date_range.png' %}">Eventos</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'birthday'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/cake.png' %}">Cumpleaños</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'profile' user.username %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/account_circle.png' %}">{{ user.profile.get_screen_name }}</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'feedback' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/email.png' %}">Buzón sugerencias</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'settings' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/settings.png' %}">Opciones</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'logout' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/power_settings_new.png' %}"></a></li>
+
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a style="vertical-align: middle !important;" href="{% url 'home'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/dashboard_b.png' %}">Mural</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'calendar'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/date_range_b.png' %}">Eventos</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'birthday'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/cake_b.png' %}">Cumpleaños</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'profile' user.username %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/account_circle_b.png' %}">{{ user.profile.get_screen_name }}</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'feedback' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/email_b.png' %}">Buzón sugerencias</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'settings' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/settings_b.png' %}">Opciones</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'logout' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/power_settings_new_b.png' %}"></a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+
+
+<!--   Calendar  
+  <div class="container">
+    <div class="section">
+-->
+<br><br>
+    <!--   Icon Section   -->
+      <div class="row">
+
+        <div class="col s12 m3">
+          <div class="card">
+            <div class="card-image">
+              <img src="{% static 'img/todaybirthday.png' %}">
+            </div>
+            <div class="card-content">
+              <span style="font-size: 20px" class="card-title">Hoy esta de cumpleaños:</span>
+            {% for todaybirth in birthdayToday %}
+            <p  style="text-align: center; font-size: 17px; font-weight: bold;">{{ todaybirth.name }}</p>
+            <div class="divider"></div>
+            <p  style="text-align: center; font-size: 15px">{{ todaybirth.department }}</p>
+            <br>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+        
+       
+       <div class="col s12 m9">
+          <!--   Calendar  -->
+          <div id='calendar'></div>
+        </div>
+
+</div>
+        
+        
+
+  <!--Footer-->
+  <footer class="page-footer indigo darken-2">
+    <div class="container">
+      <div class="row">
+        <div class="col l4 s12">
+          <img src="{% static 'img/toyota.png' %}">
+        </div>
+        <div class="col l4 s12">
+          <img src="{% static 'img/deltafooter.png' %}">
+        </div>
+        <div class="col l4 s12">
+          <img src="{% static 'img/lexus.png' %}">
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        <!--
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a> -->
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'js/materialize.js' %}"></script>
+  <script src="{% static 'js/init.js' %}"></script>
+  <script src="{% static 'js/lib/moment.min.js' %}"></script>
+  <script src="{% static 'js/lib/jquery.min.js' %}"></script>
+  <script src="{% static 'js/fullcalendar.min.js' %}"></script>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay,listWeek'
+      },
+      //defaultDate: '2018-02-12',
+      navLinks: true, // can click day/week names to navigate views
+      editable: true,
+      eventLimit: true, // allow "more" link when too many event
+      events : {{ data|safe }}
+
+    });
+  });
+</script>
+
+
+
+  </body>
+</html>

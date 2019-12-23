@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+{% load static %}
+{% load humanize %}
+
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Mural - Delta Comercial</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css/fullcalendar.min.css' %}" rel='stylesheet' />
+  <link href="{% static 'css/fullcalendar.print.min.css' %}" rel='stylesheet' media='print' />
+
+</head>
+<body>
+
+ <nav class="indigo darken-2" role="navigation">
+    <div class="nav-wrapper">
+      <img src="{% static 'img/delta.png' %}">
+      <a id="logo-container" href="{% url 'home'%}" class="brand-logo">Delta Comercial, S.A.</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a style="vertical-align: middle !important;" href="{% url 'home'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/dashboard.png' %}">Mural</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'calendar'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/date_range.png' %}">Eventos</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'birthday'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/cake.png' %}">Cumpleaños</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'profile' user.username %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/account_circle.png' %}">{{ user.profile.get_screen_name }}</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'feedback' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/email.png' %}">Buzón sugerencias</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'settings' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/settings.png' %}">Opciones</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'logout' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/power_settings_new.png' %}"></a></li>
+
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a style="vertical-align: middle !important;" href="{% url 'home'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/dashboard_b.png' %}">Mural</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'calendar'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/date_range_b.png' %}">Eventos</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'birthday'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/cake_b.png' %}">Cumpleaños</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'profile' user.username %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/account_circle_b.png' %}">{{ user.profile.get_screen_name }}</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'feedback' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/email_b.png' %}">Buzón sugerencias</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'settings' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/settings_b.png' %}">Opciones</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'logout' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/power_settings_new_b.png' %}"></a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+
+
+
+<!-- Publicaciones -->
+  <div class="row">
+
+    <div class="col s12 m12">
+      <div class="card hoverable">
+        <ul class="collection">
+        <li class="collection-item avatar">
+          <h4>{{ memos.title }}</h4>
+          <span style="font-size: 25px" class="title secondary-content">{{ memos.date |date:'d N - Y'}}</span>
+        </li>
+        <div class="card-content">
+          {{ memos.text | safe }}
+        </div>
+        <div class="card-action">
+              <div class="row">
+                <form method="POST" id="post-form">
+                {% csrf_token %}
+                 {{ form.as_p }}
+                <button class="btn waves-effect waves-light" type="submit" name="action" value="Post">Enviar<i class="material-icons right">send</i>
+                </button>
+              </form>
+              </div>
+
+            <ul class="collection">
+              {% for comment in memos.comments.all %}
+              <li class="collection-item avatar">
+                <!-- Original: {{ comment.user.profile.get_picture }} para ver la imagen del usuario, se esta utilizando de esta manera porque la imagen sera estatica. -->
+                  <img src="{% static 'img/user.png' %}" alt="" class="circle">
+                <a href="{% url 'profile' comment.user.username %}" class="title">{{ comment.user }}:</a>
+                <p>{{ comment.comment }}</p>
+                <div>
+                  <p style="font-size: 13px" class="right-align">{{ comment.date }}</p>
+                  </div>
+                  {% empty %}
+                    <p class="center-align">Se el primero en comentar!</p>
+                </li>
+                {% endfor %}
+              </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Footer -->
+  <footer class="page-footer indigo darken-2">
+    <div class="container">
+      <div class="row">
+        <div class="col l4 s12">
+          <img src="{% static 'img/toyota.png' %}">
+        </div>
+        <div class="col l4 s12">
+          <img src="{% static 'img/deltafooter.png' %}">
+        </div>
+        <div class="col l4 s12">
+          <img src="{% static 'img/lexus.png' %}">
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        <!--
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a> -->
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'js/materialize.js' %}"></script>
+  <script src="{% static 'js/init.js' %}"></script>
+  <script src="{% static 'js/lib/moment.min.js' %}"></script>
+  <script src="{% static 'js/lib/jquery.min.js' %}"></script>
+  <script src="{% static 'js/fullcalendar.min.js' %}"></script>
+  <script src="{% static 'js/messages.js' %}"></script>
+  <script src="{% static 'js/check_messages.js' %}"></script>
+
+  </body>
+</html>
+
+ 

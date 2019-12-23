@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Mural - Delta Comercial</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css/fullcalendar.min.css' %}" rel='stylesheet' />
+  <link href="{% static 'css/fullcalendar.print.min.css' %}" rel='stylesheet' media='print' />
+
+</head>
+<body>
+
+ <nav class="indigo darken-2" role="navigation">
+    <div class="nav-wrapper">
+      <img src="{% static 'img/delta.png' %}">
+      <a id="logo-container" href="{% url 'home'%}" class="brand-logo">Delta Comercial, S.A.</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a style="vertical-align: middle !important;" href="{% url 'home'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/dashboard.png' %}">Mural</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'calendar'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/date_range.png' %}">Eventos</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'birthday'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/cake.png' %}">Cumpleaños</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'profile' user.username %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/account_circle.png' %}">{{ user.profile.get_screen_name }}</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'feedback' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/email.png' %}">Buzón sugerencias</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'settings' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/settings.png' %}">Opciones</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'logout' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/power_settings_new.png' %}"></a></li>
+
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a style="vertical-align: middle !important;" href="{% url 'home'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/dashboard_b.png' %}">Mural</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'calendar'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/date_range_b.png' %}">Eventos</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'birthday'%}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/cake_b.png' %}">Cumpleaños</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'profile' user.username %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/account_circle_b.png' %}">{{ user.profile.get_screen_name }}</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'feedback' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/email_b.png' %}">Buzón sugerencias</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'settings' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/settings_b.png' %}">Opciones</a></li>
+        <li><a style="vertical-align: middle !important;" href="{% url 'logout' %}"><img style="max-height: 30px; vertical-align: middle !important;" src="{% static 'icons/power_settings_new_b.png' %}"></a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+
+
+
+<!-- Publicaciones -->
+  <div class="row">
+
+<div class="container">
+  <div class="col s12 m12">
+  <div class="card teal">
+    <div class="card-content center-align white-text">
+      <h5>Configuración de usuario</h5>
+    </div>
+    <div class="card-tabs">
+      <ul class="tabs tabs-fixed-width tabs-transparent">
+        <li class="tab"><a href="#test4">Perfil</a></li>
+        <!-- DESHABILITADO HASTA NUEVO AVISO -->
+        <!-- <li class="tab"><a>Imagen</a></li>-->
+        <!-- DESHABILITADO HASTA NUEVO AVISO -->
+        <li class="tab"><a href="#test6">Contraseña</a></li>
+      </ul>
+    </div>
+
+    <div class="card-content grey lighten-4">
+      <!-- TAB PERFIL -->   
+      <div id="test4">
+        <form role="form" class="form-horizontal" method="post" action="{% url 'settings' %}" id="profile-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+          <div>
+              {{ form.first_name.errors }}
+              <label for="{{ form.first_name.id_for_label }}">Nombre:</label>
+              {{ form.first_name }}
+          </div>
+          <div>
+              {{ form.last_name.errors }}
+              <label for="{{ form.last_name.id_for_label }}">Apellido:</label>
+              {{ form.last_name }}
+          </div>
+          <div>
+              {{ form.job_title.errors }}
+              <label for="{{ form.job_title.id_for_label }}">Puesto:</label>
+              {{ form.job_title }}
+          </div>
+          <div>
+              {{ form.email.errors }}
+              <label for="{{ form.email.id_for_label }}">Email:</label>
+              {{ form.email }}
+          </div>
+          <div>
+              {{ form.url.errors }}
+              <label for="{{ form.url.id_for_label }}">url:</label>
+              {{ form.url }}
+          </div>
+          <div>
+              {{ form.location.errors }}
+              <label for="{{ form.location.id_for_label }}">Sucursal:</label>
+              {{ form.location }}
+          </div>
+        {% comment %}
+        <div class="form-group">
+          <label for="language" class="col-sm-2 control-label">Language</label>
+          <div class="col-sm-10">
+            <select id="language" name="language" class="form-control">
+              {% for lang in LANGUAGES %}
+                <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        {% endcomment %}
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
+          </div>
+        </div>
+      </form>
+      </div>
+      <!-- END TAB PERFIL -->
+
+      <!-- TAB IMAGEN     
+      <div id="test5">
+
+      <h5 style="margin-top: 0">{% trans 'Cambiar Imagen' %}</h5>
+      <img src="{{ user.profile.get_picture }}" style="width: 150px; border-radius: 5px; margin-bottom: 1em;">
+
+      <form enctype="multipart/form-data" method="post" action="{% url 'upload_picture' %}" id="picture-upload-form">
+        {% csrf_token %}
+        <div class="file-field input-field">
+           <div class="btn">
+              <span>File</span>
+              <input name="picture" type="file">
+            </div>
+            <div class="file-path-wrapper">
+              <input name="picture" class="file-path validate" type="text">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-default" id="btn-upload-picture">{% trans 'Upload new picture' %}</button>
+      </form>  
+    </div>
+     END TAB IMAGEN -->
+
+    <!-- TAB PASSWORD --> 
+      <div id="test6">
+        <h5 style="margin-top: 0">{% trans 'Contraseña' %}</h5>
+        <a href="{% url 'password' %}" class="waves-effect waves-light btn">Cambiar</a>
+        </div>
+      </div>
+      </div>
+      <!-- END TAB PASSWORD -->
+    </div>
+
+    </div>
+
+
+      
+
+    </div>
+
+  </div>
+  </div>
+</div> 
+
+  </div>
+<!--  END Publicaciones   -->
+
+<!-- Footer -->
+  <footer class="page-footer indigo darken-2">
+    <div class="container">
+      <div class="row">
+        <div class="col l4 s12">
+          <img src="{% static 'img/toyota.png' %}">
+        </div>
+        <div class="col l4 s12">
+          <img src="{% static 'img/deltafooter.png' %}">
+        </div>
+        <div class="col l4 s12">
+          <img src="{% static 'img/lexus.png' %}">
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        <!--
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a> -->
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="{% static 'js/materialize.js' %}"></script>
+  <script src="{% static 'js/init.js' %}"></script>
+  <script src="{% static 'js/lib/moment.min.js' %}"></script>
+  <script src="{% static 'js/lib/jquery.min.js' %}"></script>
+  <script src="{% static 'js/fullcalendar.min.js' %}"></script>
+  <script src="{% static 'js/messages.js' %}"></script>
+  <script src="{% static 'js/check_messages.js' %}"></script>
+  <script src="{% static 'js/picture.js' %}"></script>
+
+  </body>
+</html>

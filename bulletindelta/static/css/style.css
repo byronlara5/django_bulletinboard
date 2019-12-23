@@ -1,0 +1,152 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+	font-size: inherit;
+}
+
+.card .card-title {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.card .card-image {
+  position: relative;
+}
+
+.card .card-image img {
+  display: block;
+  border-radius: 2px 2px 0 0;
+  position: relative;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+
+.card .card-image .card-title {
+  color: #fff;
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  max-width: 100%;
+  padding: 20px;
+}
+
+.card .card-image .card-titletwo {
+  color: #fff;
+  position: absolute;
+  bottom: 19px;
+  left: 0;
+  max-width: 100%;
+  padding: 20px;
+}
+
+
+.collection .collection-item.avatar {
+  min-height: 60px;
+  padding-left: 72px;
+  position: relative;
+}
+
+
+
+#img-custom-circle {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: white;
+  border-width: 3px;
+  z-index: 1;
+  left: 30%;
+  top: 60%;
+}
+
+#img-custom-circle-profile {
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: white;
+  border-width: 3px;
+  z-index: 1;
+  left: 10%;
+  top: 20%;
+}
+
+#bg-logon {
+
+    /* The image used */
+    background-image: url("{% static 'img/bulletin_cover.jpg' %}");
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+
+
+ /* Property for the dropdown of the users new message */
+.typeahead, .tt-query, .tt-hint {
+  border: 1px solid #CCCCCC;
+  border-radius: 5px;
+  font-size: 1.2em;
+  height: 35px;
+  line-height: 35px;
+  outline: medium none;
+  padding: 4px 12px;
+  width: 300px;
+}
+.typeahead {
+  background-color: #FFFFFF;
+}
+.typeahead:focus {
+  border: 2px solid #0097CF;
+}
+.tt-query {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.tt-hint {
+  color: #999999;
+}
+.tt-dropdown-menu {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 8px;
+  padding: 8px 0;
+  width: 300px;
+}
+.tt-suggestion {
+  font-size: 1.2em;
+  line-height: 24px;
+  padding: 3px 20px;
+}
+.tt-suggestion.tt-cursor {
+  background-color: #0097CF;
+  color: #FFFFFF;
+}
+.tt-suggestion p {
+  margin: 0;
+
+
+
